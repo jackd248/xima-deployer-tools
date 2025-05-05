@@ -15,7 +15,7 @@
 	],
 	"require": {
 		"deployer/deployer": "^7.0",
-		"sourcebroker/deployer-extended": "^18.0",
+		"sourcebroker/deployer-extended": "^24.0",
 		"sourcebroker/deployer-loader": "^2.0.1"
 	},
 	"autoload": {
