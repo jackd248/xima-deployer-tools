@@ -7,6 +7,11 @@ use function Deployer\get;
 use function Deployer\run;
 use function Deployer\test;
 
+/**
+ * Database Management "Root"
+ *
+ * This manager supports the database management via a root user with full privileges.
+ */
 class Root extends AbstractManager implements ManagerInterface {
 
     public function create(): void

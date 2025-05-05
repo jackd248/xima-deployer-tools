@@ -2,7 +2,6 @@
 
 namespace Xima\XimaDeployerTools\Database\Manager;
 
-
 use Xima\XimaDeployerTools\Utility\VarUtility;
 use function Deployer\get;
 use function Deployer\run;
@@ -31,6 +30,17 @@ abstract class AbstractManager {
     {
         $feature = $feature ?: input()->getOption('feature');
         $project = get('project');
-        return substr(getFeatureName("{$project}--{$feature}"),0,63);
+        return substr($this->getFeatureName("{$project}--{$feature}"),0,63);
+    }
+
+
+    /**
+     * @param string|null $feature
+     * @return array|string|string[]|null
+     */
+    public function getFeatureName(?string $feature = null) {
+        $feature = $feature ?: input()->getOption('feature');
+
+        return preg_replace('/[^A-Za-z0-9\_\-.]/', '', $feature);
     }
 }

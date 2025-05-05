@@ -2,9 +2,10 @@
 
 namespace Xima\XimaDeployerTools\Utility;
 
-
+use Xima\XimaDeployerTools\Database\Manager\Api;
 use Xima\XimaDeployerTools\Database\Manager\ManagerInterface;
 use Xima\XimaDeployerTools\Database\Manager\Root;
+use Xima\XimaDeployerTools\Database\Manager\Simple;
 use function Deployer\get;
 use function Deployer\run;
 use function Deployer\test;
@@ -12,17 +13,17 @@ use function Deployer\test;
 class DbUtility
 {
 
+    public const DATABASE_MANAGEMENT_TYPE_ROOT = 'root';
+    public const DATABASE_MANAGEMENT_TYPE_SIMPLE = 'simple';
+    public const DATABASE_MANAGEMENT_TYPE_API = 'api';
+
     protected static array $databaseManagers = [
         'default' => Root::class,
-        'root' => Root::class,
-        'simple' => 'todo',
-        'api' => 'todo',
+        self::DATABASE_MANAGEMENT_TYPE_ROOT => Root::class,
+        self::DATABASE_MANAGEMENT_TYPE_SIMPLE => Simple::class,
+        self::DATABASE_MANAGEMENT_TYPE_API => Api::class,
     ];
 
-
-    /**
-     *
-     */
     public static function getDatabaseManager(): ManagerInterface
     {
         $type = has('database_manager_type') ? get('database_manager_type') : 'default';
