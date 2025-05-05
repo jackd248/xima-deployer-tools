@@ -1,0 +1,9 @@
+<?php
+
+namespace Xima\XimaDeployerTools\Database\Manager;
+
+interface ManagerInterface {
+    public function run(string $command): string;
+    public function create(): void;
+    public function delete(string $feature): void;
+}

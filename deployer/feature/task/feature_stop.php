@@ -2,6 +2,8 @@
 
 namespace Deployer;
 
+use Xima\XimaDeployerTools\Utility\DbUtility;
+
 require_once('feature_init.php');
 require_once('url_shortener.php');
 
@@ -33,12 +35,10 @@ function deleteFeature(?string $feature = null, $needConfirmation = false): void
 {
     $feature = $feature ?: input()->getOption('feature');
 
-    $databaseName = getDatabaseName($feature);
-    $databaseRemoveCommand = "DROP DATABASE IF EXISTS `$databaseName`;";
     $filesRemoveCommand = "rm -rf " . get('deploy_path');
 
     if ($needConfirmation) {
-        $delete = askConfirmation("Remove feature \"$feature\"? (<fg=gray>CLI: \"$filesRemoveCommand\" // SQL: \"$databaseRemoveCommand\"</>)", false);
+        $delete = askConfirmation("Remove feature \"$feature\"? (<fg=gray>CLI: \"$filesRemoveCommand\"</>)", false);
         if (!$delete) return;
     }
 
@@ -46,7 +46,8 @@ function deleteFeature(?string $feature = null, $needConfirmation = false): void
         removeUrlShortenerPath($feature);
     }
 
-    runDatabaseCommand($databaseRemoveCommand, false);
+    $manager = DbUtility::getDatabaseManager();
+    $manager->delete($feature);
     runExtended($filesRemoveCommand);
 
     info("feature branch <fg=magenta;options=bold>$feature</> deleted");

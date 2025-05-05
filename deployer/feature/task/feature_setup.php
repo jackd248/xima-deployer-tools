@@ -2,7 +2,7 @@
 
 namespace Deployer;
 
-use Xima\XimaDeployerTools\Utility\VarUtility;
+use Xima\XimaDeployerTools\Utility\DbUtility;
 
 require_once('feature_init.php');
 require_once('url_shortener.php');
@@ -19,7 +19,7 @@ task('feature:setup', function () {
     if (!checkFeatureBranchExists()) {
         info("setup feature branch <fg=magenta;options=bold>$feature</>");
         set('feature_setup', true);
-        createDatabase();
+        DbUtility::getDatabaseManager()->create();
         renderRemoteTemplates();
     } else {
         set('feature_setup', false);
@@ -30,48 +30,6 @@ task('feature:setup', function () {
     ->desc('Setup a feature branch')
 ;
 
-/**
- * Create a new database for the feature branch
- *
- * @return void
- * @throws \Deployer\Exception\Exception
- * @throws \Deployer\Exception\RunException
- * @throws \Deployer\Exception\TimeoutException
- */
-function createDatabase(): void
-{
-    debug('Creating database');
-    $databaseName = getDatabaseName();
-    $additionalParams = '';
-
-    if (has('database_collation')) {
-        $additionalParams .= ' COLLATE ' . get('database_collation');
-    }
-
-    if (has('database_charset')) {
-        $additionalParams .= ' CHARACTER SET ' . get('database_charset');
-    }
-
-    runDatabaseCommand("CREATE DATABASE IF NOT EXISTS `$databaseName`{$additionalParams};", false);
-}
-
-/**
- * Run a database command on the remote system
- *
- * @throws \Deployer\Exception\RunException
- * @throws \Deployer\Exception\TimeoutException
- * @throws \Deployer\Exception\Exception
- */
-function runDatabaseCommand($command, $useDoubleQuotes = true): string
-{
-    $databaseUser = get('database_user');
-    $databaseHost = get('database_host');
-    $databasePort = get('database_port');
-    $databasePassword = VarUtility::getDatabasePassword();
-    $quote = $useDoubleQuotes ? '"' : '\'';
-
-    return runExtended(get('mysql') . " -u$databaseUser -p'%secret%' -h$databaseHost -P$databasePort -e {$quote}$command{$quote}", [],null,null, $databasePassword);
-}
 
 /**
  * Checks if a feature branch already exists regarding the database and the server path
@@ -83,8 +41,8 @@ function runDatabaseCommand($command, $useDoubleQuotes = true): string
 function checkFeatureBranchExists(): bool
 {
     $path = get('deploy_path');
-    $databaseName = getDatabaseName();
-    return (str_replace(' ', '', runDatabaseCommand("SHOW DATABASES LIKE '$databaseName'")) !== '' &&
+    $databaseName = DbUtility::getDatabaseManager()->getDatabaseName();
+    return (str_replace(' ', '', DbUtility::getDatabaseManager()->run("SHOW DATABASES LIKE '$databaseName'")) !== '' &&
         test("[[ -d $path ]]"));
 }
 
@@ -108,7 +66,7 @@ function checkFeatureBranchExists(): bool
 function renderRemoteTemplates(): void
 {
     debug('Rendering remote template');
-    $databaseName = getDatabaseName();
+    $databaseName = DbUtility::getDatabaseManager()->getDatabaseName();
     $feature = input()->getOption('feature');
     $templates = get('feature_templates');
 
@@ -182,18 +140,6 @@ function uploadTemplate($localTemplate, $remoteTarget, $arguments): void {
     // upload template to remote
     upload($temporaryFileName,get('deploy_path') . $remoteTarget);
     unlink($temporaryFileName);
-}
-
-/**
- * Generate a database name
- * @param ?string $feature
- * @return string
- */
-function getDatabaseName(?string $feature = null): string
-{
-    $feature = $feature ?: input()->getOption('feature');
-    $project = get('project');
-    return substr(getFeatureName("{$project}--{$feature}"),0,63);
 }
 
 /**

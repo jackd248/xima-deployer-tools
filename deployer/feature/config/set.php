@@ -64,3 +64,8 @@ set('feature_stop_disallowed_names', [
   'main',
   'master'
 ]);
+
+/**
+ * Database Manager
+ */
+set('database_manager_type', 'default');
