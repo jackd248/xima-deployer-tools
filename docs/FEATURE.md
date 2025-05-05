@@ -27,9 +27,7 @@ The following steps are necessary to successfully setup the deployment workflow:
 
 ### Prerequirements
 
-You need a database user with the following grants to dynamically create and delete new databases:
-
-- `SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE`
+Choose an according [database management](DATABASE.md) type for your application.
 
 Add the following line to your deployer host entry, to enable the feature branch deployment for this stage:
 
