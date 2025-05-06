@@ -1,6 +1,6 @@
 <?php
 
-namespace Xima\XimaDeployerTools\Utility;
+namespace Xima\XimaDeployerTools\Database;
 
 use Xima\XimaDeployerTools\Database\Manager\Api;
 use Xima\XimaDeployerTools\Database\Manager\ManagerInterface;

@@ -2,7 +2,7 @@
 
 namespace Deployer;
 
-use Xima\XimaDeployerTools\Utility\DbUtility;
+use Xima\XimaDeployerTools\Database\DbUtility;
 
 require_once('feature_init.php');
 require_once('url_shortener.php');
