@@ -4,8 +4,7 @@ namespace Xima\XimaDeployerTools\Database\Manager;
 
 use function Deployer\debug;
 use function Deployer\get;
-use function Deployer\run;
-use function Deployer\test;
+use function Deployer\has;
 
 /**
  * Database Management "Root"

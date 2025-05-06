@@ -5,6 +5,7 @@ namespace Xima\XimaDeployerTools\Database\Manager;
 use Xima\XimaDeployerTools\Utility\VarUtility;
 use function Deployer\get;
 use function Deployer\run;
+use function Deployer\input;
 use function Deployer\runExtended;
 use function Deployer\test;
 

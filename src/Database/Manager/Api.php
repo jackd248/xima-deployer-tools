@@ -2,10 +2,6 @@
 
 namespace Xima\XimaDeployerTools\Database\Manager;
 
-use function Deployer\get;
-use function Deployer\run;
-use function Deployer\test;
-
 /**
  * Database Management "API"
  *

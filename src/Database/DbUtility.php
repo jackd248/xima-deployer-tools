@@ -7,6 +7,7 @@ use Xima\XimaDeployerTools\Database\Manager\ManagerInterface;
 use Xima\XimaDeployerTools\Database\Manager\Root;
 use Xima\XimaDeployerTools\Database\Manager\Simple;
 use function Deployer\get;
+use function Deployer\has;
 use function Deployer\run;
 use function Deployer\test;
 
