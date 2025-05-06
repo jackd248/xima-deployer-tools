@@ -48,12 +48,12 @@ class Simple extends AbstractManager implements ManagerInterface
     public function getDatabaseName(?string $feature = null): string
     {
         $feature = $feature ?: input()->getOption('feature');
-        $databaseName = $this->getAssignment($feature);
+        $databaseAssignment = $this->getAssignment($feature);
 
-        if (!$databaseName) {
+        if (!$databaseAssignment) {
             return '';
         }
-
+        $databaseName = $this->getDatabaseConfiguration($databaseAssignment)['database_name'] ?? '';
         return $databaseName;
     }
 
