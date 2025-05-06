@@ -7,6 +7,7 @@ use function Deployer\get;
 use function Deployer\set;
 use function Deployer\has;
 use function Deployer\run;
+use function Deployer\input;
 use function Deployer\runExtended;
 use function Deployer\test;
 
@@ -43,7 +44,7 @@ class Simple extends AbstractManager implements ManagerInterface
         $this->run($this->generateDropTablesQuery($this->getDatabaseName($feature)));
     }
 
-    public function getDatabaseName(string $feature = null): string
+    public function getDatabaseName(?string $feature = null): string
     {
         $feature = $feature ?: input()->getOption('feature');
         $databaseName = $this->getAssignment($feature);
