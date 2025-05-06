@@ -88,3 +88,9 @@ set('rsync_default_excludes', [
 ]);
 
 set('feature_index_app_type', 'typo3');
+
+/**
+ * Env Keys
+ */
+set('env_key_database_passwort', 'TYPO3_CONF_VARS__DB__Connections__Default__password');
+set('env_key_database_name', 'TYPO3_CONF_VARS__DB__Connections__Default__dbname');

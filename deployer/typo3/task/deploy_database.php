@@ -22,8 +22,8 @@ set('sync_database_backup_config', __DIR__ . '/.deployment/db-sync-tool/backup-p
 function getDatabasePasswordForTypo3(): string|bool
 {
     $vars = EnvUtility::getRemoteEnvVars();
-    if (array_key_exists('TYPO3_CONF_VARS__DB__Connections__Default__password', $vars)) {
-        return $vars['TYPO3_CONF_VARS__DB__Connections__Default__password'];
+    if (array_key_exists(get('env_key_database_passwort'), $vars)) {
+        return $vars[get('env_key_database_passwort')];
     }
     return false;
 }
@@ -31,8 +31,8 @@ function getDatabasePasswordForTypo3(): string|bool
 function getDatabaseNameForTypo3(): string|bool
 {
     $vars = EnvUtility::getRemoteEnvVars();
-    if (array_key_exists('TYPO3_CONF_VARS__DB__Connections__Default__dbname', $vars)) {
-        return $vars['TYPO3_CONF_VARS__DB__Connections__Default__dbname'];
+    if (array_key_exists(get('env_key_database_name'), $vars)) {
+        return $vars[get('env_key_database_name')];
     }
     return false;
 }
