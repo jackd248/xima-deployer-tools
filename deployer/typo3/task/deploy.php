@@ -39,10 +39,6 @@ task('deploy', [
     // custom clear and warmup system specific caches
     'deploy:cache:clear_and_warmup',
 
-    // Start buffering http requests. No frontend access possible from now.
-    // Read more on https://github.com/sourcebroker/deployer-extended#buffer-start
-    'buffer:start',
-
     // Standard deployer task.
     'deploy:symlink',
 
@@ -53,10 +49,6 @@ task('deploy', [
     // Clear frontend http cache.
     // Read more on https://github.com/sourcebroker/deployer-extended#cache-clear-php-http
     'cache:clear_php_http',
-
-    // Frontend access possible again from now
-    // Read more on https://github.com/sourcebroker/deployer-extended#buffer-stop
-    'buffer:stop',
 
     // custom warmup task
     'deploy:warmup_frontend',
