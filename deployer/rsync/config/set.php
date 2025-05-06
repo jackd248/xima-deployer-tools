@@ -30,7 +30,7 @@ set('rsync_default_excludes', [
 set('rsync_src', './{{app_path}}');
 set('rsync', [
     'exclude' => array_merge(get('shared_dirs'), get('shared_files'), get('rsync_default_excludes')),
-    'exclude-file' => get('rsync-exclude-file'),
+    'exclude-file' => '{{rsync-exclude-file}}',
     'include' => [],
     'include-file' => false,
     'filter' => [],
