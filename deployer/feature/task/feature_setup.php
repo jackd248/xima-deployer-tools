@@ -67,7 +67,6 @@ function renderRemoteTemplates(): void
 {
     debug('Rendering remote template');
     $databaseName = DbUtility::getDatabaseManager()->getDatabaseName();
-    debug(1);
     $feature = input()->getOption('feature');
     $templates = get('feature_templates');
 
