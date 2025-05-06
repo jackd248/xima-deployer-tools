@@ -19,7 +19,7 @@ abstract class AbstractManager {
         $databasePassword = VarUtility::getDatabasePassword();
         $quote = $useDoubleQuotes ? '"' : '\'';
 
-        return runExtended(get('mysql') . " -u$databaseUser -p'%secret%' -h$databaseHost -P$databasePort -e {$quote}$command{$quote}", [],null,null, $databasePassword);
+        return runExtended(get('mysql') . " -u$databaseUser -p'%secret%' -h$databaseHost -P$databasePort -e {$quote}$command{$quote}", [],null,null, $databasePassword, real_time_output: false);
     }
 
     /**

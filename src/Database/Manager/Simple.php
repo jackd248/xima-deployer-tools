@@ -56,8 +56,9 @@ class Simple extends AbstractManager implements ManagerInterface
             return false;
         }
 
+        $this->initDatabaseConfiguration(feature: $feature);
         $databaseExistsCommand = sprintf(
-            "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '%s';",
+            "SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_schema = '%s';",
             $databaseName
         );
         return (int)$this->run($databaseExistsCommand) > 0;
@@ -77,7 +78,7 @@ class Simple extends AbstractManager implements ManagerInterface
     private function readAssignment(): array
     {
         $filePath = get('deploy_base_path') . '/' . get('feature_directory_path') . '/database_assignments.json';
-        return test("[ -f $filePath ]") ? \json_decode(runExtended("cat $filePath"), true) ?: [] : [];
+        return test("[ -f $filePath ]") ? \json_decode(runExtended("cat $filePath", real_time_output: false), true) ?: [] : [];
     }
 
     private function updateAssignment(string $database, string $feature): void
@@ -168,7 +169,7 @@ class Simple extends AbstractManager implements ManagerInterface
         $filePath = get('deploy_base_path') . '/' . get('feature_directory_path') . '/database_assignments.json';
         $tempFile = '.deployer.database_assignments.tmp';
         file_put_contents($tempFile, json_encode($assignments, JSON_PRETTY_PRINT));
-        upload($tempFile, $filePath);
+        upload($tempFile, $filePath, ['progress_bar' => false, 'display_stats' => false]);
         unlink($tempFile);
     }
 
