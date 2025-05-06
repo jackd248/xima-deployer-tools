@@ -20,6 +20,7 @@
 	},
 	"autoload": {
 		"psr-4": {
+			"Xima\\XimaDeployerTools\\Database\\": "src/Database/",
 			"Xima\\XimaDeployerTools\\Utility\\": "src/Utility/",
 			"Xima\\XimaDeployerTools\\Drupal\\": "deployer/drupal/",
 			"Xima\\XimaDeployerTools\\Symfony\\": "deployer/symfony/",
