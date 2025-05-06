@@ -30,6 +30,7 @@ task('feature:init', function () {
 function initFeature(?string $feature = null): ?string
 {
     debug('Initializing feature instance');
+    set('deploy_base_path', get('deploy_path'));
     // check if feature was already initialized
     if (has('feature_initialized') && get('feature_initialized')) return get('feature');;
 

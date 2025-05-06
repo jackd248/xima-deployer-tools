@@ -67,6 +67,7 @@ function renderRemoteTemplates(): void
 {
     debug('Rendering remote template');
     $databaseName = DbUtility::getDatabaseManager()->getDatabaseName();
+    debug(1);
     $feature = input()->getOption('feature');
     $templates = get('feature_templates');
 
@@ -80,6 +81,7 @@ function renderRemoteTemplates(): void
     $additionalTemplateVariables = [];
     foreach ($environmentVariables as $key => $value) {
         if (str_starts_with($key, 'DEPLOYER_CONFIG_')) {
+            debug('additional template variable: ' . $key);
             $additionalTemplateVariables[$key] = $value;
         }
     }
@@ -102,6 +104,7 @@ function renderRemoteTemplates(): void
 
     // iterate through predefined templates
     foreach ($templates as $template => $target) {
+        debug('Uploading template: ' . $template . '...');
         uploadTemplate($template, $target, $arguments);
     }
 }

@@ -33,13 +33,13 @@ set('database_manager_type', 'simple')
 
 set('database_pool', [
     'db1' => [
-        'host' => '{{database_host}}',
-        'port' => '{{database_port}}',
-        'user' => 'db1_user',
-        'password' => 'DEPLOYER_CONFIG_DB1_PASSWORD',
-        'database' => 'db1',
-        'charset' => '{{database_charset}}',
-        'collation' => '{{database_collation}}',
+        'database_host' => '{{database_host}}',
+        'database_port' => '{{database_port}}',
+        'database_user' => 'db1_user',
+        'database_password' => 'DEPLOYER_CONFIG_DB1_PASSWORD',
+        'database_name' => 'db1',
+        'database_charset' => '{{database_charset}}',
+        'database_collation' => '{{database_collation}}',
     ],
     ...
 ]);

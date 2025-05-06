@@ -8,6 +8,7 @@ use function Deployer\set;
 use function Deployer\has;
 use function Deployer\run;
 use function Deployer\input;
+use function Deployer\upload;
 use function Deployer\runExtended;
 use function Deployer\test;
 
@@ -23,11 +24,11 @@ class Simple extends AbstractManager implements ManagerInterface
         debug('Creating database');
         $this->ensureDatabasePoolExists();
 
-        if (!$this->hasFreeAssignments()) {
+        if (!$this->hasFreeAssignments() && $this->getAssignment($this->getFeatureName()) === null) {
             throw new \RuntimeException('No free databases available. Check your pool or cleanup unused assignments.');
         }
 
-        $database = $this->getFreeAssignment();
+        $database = $this->getAssignment($this->getFeatureName()) ?: $this->getFreeAssignment();
         $databaseConfiguration = $this->getDatabaseConfiguration($database);
         $this->checkAssignmentConfiguration($databaseConfiguration);
         $this->updateAssignment($database, $this->getFeatureName());
@@ -50,7 +51,7 @@ class Simple extends AbstractManager implements ManagerInterface
         $databaseName = $this->getAssignment($feature);
 
         if (!$databaseName) {
-            throw new \RuntimeException('No database assignment found for feature: ' . $feature);
+            return '';
         }
 
         return $databaseName;
@@ -58,7 +59,7 @@ class Simple extends AbstractManager implements ManagerInterface
 
     private function readAssignment(): array
     {
-        $filePath = get('deploy_path') . '/database_assignments.json';
+        $filePath = get('deploy_base_path') . '/' . get('feature_directory_path') . '/database_assignments.json';
         return test("[ -f $filePath ]") ? \json_decode(runExtended("cat $filePath"), true) ?: [] : [];
     }
 
@@ -127,7 +128,7 @@ class Simple extends AbstractManager implements ManagerInterface
 
     private function checkAssignmentConfiguration(array $assignment): void
     {
-        $requiredKeys = ['user', 'password', 'database'];
+        $requiredKeys = ['database_user', 'database_password', 'database_name'];
         $isValid = !array_diff_key(array_flip($requiredKeys), array_filter($assignment));
 
         if (!$isValid) {
@@ -147,7 +148,7 @@ class Simple extends AbstractManager implements ManagerInterface
 
     private function writeAssignments(array $assignments): void
     {
-        $filePath = get('deploy_path') . '/database_assignments.json';
+        $filePath = get('deploy_base_path') . '/' . get('feature_directory_path') . '/database_assignments.json';
         $tempFile = '.deployer.database_assignments.tmp';
         file_put_contents($tempFile, json_encode($assignments, JSON_PRETTY_PRINT));
         upload($tempFile, $filePath);
@@ -159,17 +160,17 @@ class Simple extends AbstractManager implements ManagerInterface
         return preg_replace('/\s*\R\s*/', ' ', trim(sprintf(<<<'EOT'
         SET FOREIGN_KEY_CHECKS = 0;
         SET GROUP_CONCAT_MAX_LEN = 32768;
-        
+
         SET @tables = NULL;
         SELECT GROUP_CONCAT('`', table_name, '`') INTO @tables
         FROM information_schema.tables
         WHERE table_schema = '%s';
-        
+
         SET @query = CONCAT('DROP TABLE IF EXISTS ', @tables);
         PREPARE stmt FROM @query;
         EXECUTE stmt;
         DEALLOCATE PREPARE stmt;
-        
+
         SET FOREIGN_KEY_CHECKS = 1;
         EOT, $database)));
     }

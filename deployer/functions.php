@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 function debug($message): void
 {
-    if (isVerbose()) {
+    if (isVerbose() && !empty($message)) {
         writeln("<fg=yellow;options=bold>debug</> " . parse($message));
     }
 }
