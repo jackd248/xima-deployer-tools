@@ -11,7 +11,8 @@ use function Deployer\has;
  *
  * This manager supports the database management via a root user with full privileges.
  */
-class Root extends AbstractManager implements ManagerInterface {
+class Root extends AbstractManager implements ManagerInterface
+{
 
     public function create(): void
     {
@@ -36,5 +37,14 @@ class Root extends AbstractManager implements ManagerInterface {
         $databaseName = $this->getDatabaseName($feature);
         $databaseRemoveCommand = "DROP DATABASE IF EXISTS `$databaseName`;";
         $this->run($databaseRemoveCommand);
+    }
+
+    public function exists(?string $feature = null): bool
+    {
+        debug('Check database exists');
+        $feature = $this->getFeatureName($feature);
+        $databaseName = $this->getDatabaseName($feature);
+        $databaseExistsCommand = "SHOW DATABASES LIKE '$databaseName';";
+        $this->run($databaseExistsCommand);
     }
 }

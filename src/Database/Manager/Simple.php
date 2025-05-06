@@ -45,6 +45,24 @@ class Simple extends AbstractManager implements ManagerInterface
         $this->run($this->generateDropTablesQuery($this->getDatabaseName($feature)));
     }
 
+    public function exists(?string $feature = null): bool
+    {
+        debug('Check database exists');
+        $feature = $this->getFeatureName($feature);
+        $this->ensureDatabasePoolExists();
+        $databaseName = $this->getDatabaseName($feature);
+
+        if (empty($databaseName)) {
+            return false;
+        }
+
+        $databaseExistsCommand = sprintf(
+            "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '%s';",
+            $databaseName
+        );
+        return (int)$this->run($databaseExistsCommand) > 0;
+    }
+
     public function getDatabaseName(?string $feature = null): string
     {
         $feature = $feature ?: input()->getOption('feature');
@@ -53,8 +71,7 @@ class Simple extends AbstractManager implements ManagerInterface
         if (!$databaseAssignment) {
             return '';
         }
-        $databaseName = $this->getDatabaseConfiguration($databaseAssignment)['database_name'] ?? '';
-        return $databaseName;
+        return $this->getDatabaseConfiguration($databaseAssignment)['database_name'] ?? '';
     }
 
     private function readAssignment(): array

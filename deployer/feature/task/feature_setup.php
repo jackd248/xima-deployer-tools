@@ -41,9 +41,7 @@ task('feature:setup', function () {
 function checkFeatureBranchExists(): bool
 {
     $path = get('deploy_path');
-    $databaseName = DbUtility::getDatabaseManager()->getDatabaseName();
-    return (str_replace(' ', '', DbUtility::getDatabaseManager()->run("SHOW DATABASES LIKE '$databaseName'")) !== '' &&
-        test("[[ -d $path ]]"));
+    return (DbUtility::getDatabaseManager()->exists() && test("[[ -d $path ]]"));
 }
 
 /**

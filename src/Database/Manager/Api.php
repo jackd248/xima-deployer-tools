@@ -18,4 +18,9 @@ class Api extends AbstractManager implements ManagerInterface {
     {
         throw new \RuntimeException('Not implemented yet.');
     }
+
+    public function exists(string $feature): bool
+    {
+        throw new \RuntimeException('Not implemented yet.');
+    }
 }
