@@ -60,7 +60,9 @@ class Simple extends AbstractManager implements ManagerInterface
             "SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_schema = '%s';",
             $databaseName
         );
-        return (int)$this->run($databaseExistsCommand) > 0;
+        $result = $this->run($databaseExistsCommand);
+        $count = (int)json_decode($result, true)['count'] ?? 0;
+        return $count > 0;
     }
 
     public function getDatabaseName(?string $feature = null): string
