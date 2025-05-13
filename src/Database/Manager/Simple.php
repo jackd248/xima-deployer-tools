@@ -39,9 +39,8 @@ class Simple extends AbstractManager implements ManagerInterface
     {
         debug('Deleting database');
         $this->ensureDatabasePoolExists();
-        $this->removeAssignment($feature);
-
         $this->initDatabaseConfiguration(feature: $feature);
+        $this->removeAssignment($feature);
         $this->run($this->generateDropTablesQuery($this->getDatabaseName($feature)));
     }
 
@@ -180,7 +179,7 @@ class Simple extends AbstractManager implements ManagerInterface
         SET GROUP_CONCAT_MAX_LEN = 32768;
 
         SET @tables = NULL;
-        SELECT GROUP_CONCAT('`', table_name, '`') INTO @tables
+        SELECT GROUP_CONCAT('`', %s, '`') INTO @tables
         FROM information_schema.tables
         WHERE table_schema = '%s';
 
@@ -190,6 +189,6 @@ class Simple extends AbstractManager implements ManagerInterface
         DEALLOCATE PREPARE stmt;
 
         SET FOREIGN_KEY_CHECKS = 1;
-        EOT, $database)));
+        EOT, $database, $database)));
     }
 }
