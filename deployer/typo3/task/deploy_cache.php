@@ -23,7 +23,7 @@ task('deploy:cache:warmup', function () {
 
 task('deploy:warmup_frontend', function () {
     foreach (get('public_urls') as $publicUrl) {
-        runExtended('curl --insecure ' . $publicUrl);
+        runExtended('curl --insecure ' . $publicUrl . '/');
     }
 });
 
