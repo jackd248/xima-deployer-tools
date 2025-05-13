@@ -181,17 +181,11 @@ class Simple extends AbstractManager implements ManagerInterface
         SET FOREIGN_KEY_CHECKS = 0;
         SET GROUP_CONCAT_MAX_LEN = 32768;
 
-        SET @tables = NULL;
-        SELECT GROUP_CONCAT('`', %s, '`') INTO @tables
+        SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;')
         FROM information_schema.tables
         WHERE table_schema = '%s';
 
-        SET @query = CONCAT('DROP TABLE IF EXISTS ', @tables);
-        PREPARE stmt FROM @query;
-        EXECUTE stmt;
-        DEALLOCATE PREPARE stmt;
-
         SET FOREIGN_KEY_CHECKS = 1;
-        EOT, $database, $database)));
+        EOT, $database)));
     }
 }
