@@ -61,7 +61,8 @@ class Simple extends AbstractManager implements ManagerInterface
             $databaseName
         );
         $result = $this->run($databaseExistsCommand);
-        $count = (int)json_decode($result, true)['count'] ?? 0;
+        $lines = explode("\n", trim($result));
+        $count = isset($lines[1]) ? (int)trim($lines[1]) : 0;
         return $count > 0;
     }
 
