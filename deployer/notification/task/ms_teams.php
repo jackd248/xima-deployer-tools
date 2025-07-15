@@ -49,7 +49,6 @@ function sendMessage(string $message = '', string $color = ''): void
                   [
                     "type" => "TextBlock",
                     "text" => $message,
-                    "weight" => "bolder",
                     "size" => "medium",
                     "wrap" => true,
                   ],
