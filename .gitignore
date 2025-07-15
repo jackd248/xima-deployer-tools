@@ -44,3 +44,5 @@ node_modules/
 /.ddev/commands/solr
 /.ddev/homeadditions
 /.ddev/*-build/Dockerfile.example
+
+composer.lock

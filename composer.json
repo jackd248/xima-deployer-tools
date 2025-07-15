@@ -18,6 +18,9 @@
 		"sourcebroker/deployer-extended": "^24.0",
 		"sourcebroker/deployer-loader": "^2.0.1"
 	},
+    "suggest": {
+      "mittwald/api-client": "Provides the Mittwald API client for deployer recipes."
+    },
 	"autoload": {
 		"psr-4": {
 			"Xima\\XimaDeployerTools\\Database\\": "src/Database/",

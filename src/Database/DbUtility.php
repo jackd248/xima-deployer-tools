@@ -4,6 +4,7 @@ namespace Xima\XimaDeployerTools\Database;
 
 use Xima\XimaDeployerTools\Database\Manager\Api;
 use Xima\XimaDeployerTools\Database\Manager\ManagerInterface;
+use Xima\XimaDeployerTools\Database\Manager\MittwaldApi;
 use Xima\XimaDeployerTools\Database\Manager\Root;
 use Xima\XimaDeployerTools\Database\Manager\Simple;
 use function Deployer\get;
@@ -18,11 +19,14 @@ class DbUtility
     public const DATABASE_MANAGEMENT_TYPE_SIMPLE = 'simple';
     public const DATABASE_MANAGEMENT_TYPE_API = 'api';
 
+    public const DATABASE_MANAGEMENT_TYPE_MITTWALD_API = 'mittwald_api';
+
     protected static array $databaseManagers = [
         'default' => Root::class,
         self::DATABASE_MANAGEMENT_TYPE_ROOT => Root::class,
         self::DATABASE_MANAGEMENT_TYPE_SIMPLE => Simple::class,
         self::DATABASE_MANAGEMENT_TYPE_API => Api::class,
+        self::DATABASE_MANAGEMENT_TYPE_MITTWALD_API => MittwaldApi::class,
     ];
 
     public static function getDatabaseManager(): ManagerInterface
